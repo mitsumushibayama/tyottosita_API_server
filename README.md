@@ -1,3 +1,3 @@
-# tyottosita_db
+# tyottosita_API_server
 
-ちょっとしたデータベース。
+DBからデータを取得するちょっとしたAPIサーバ。
