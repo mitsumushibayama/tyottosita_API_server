@@ -51,7 +51,7 @@ def get_specified_color_characters(color):
 		return json_response
 
 
-def get_skill_characters(type, cut):
+def get_skill_characters(type, cut, flag):
 
 	connector = pymysql.connect(
 		host = config.host,
@@ -62,18 +62,38 @@ def get_skill_characters(type, cut):
 		cursorclass = pymysql.cursors.DictCursor)
 
 	with connector.cursor() as cursor:
-		sql = 'select * from characters where id IN (select skill_id from skills where type = "%s" and cut = %s);'% (type, cut)
-		cursor.execute(sql)
-		result = cursor.fetchall()
 
-		response_list = []
+		if flag == 0:
 
-		for i in range(len(result)):
-			response_list.append(result[i])
+			sql = 'select characters.stars, characters.color, characters.name, skills.type, skills.cut, skills.target, characters_skill.quantity from characters inner join characters_skill on characters.character_id = characters_skill.character_id inner join skills on characters_skill.skill_id = skills.skill_id where skills.type = "%s" and skills.cut = %s;'% (type, cut)
+			cursor.execute(sql)
+			result = cursor.fetchall()
 
-		json_response = { "character_data" : response_list }
+			response_list = []
 
-		return json_response
+			for i in range(len(result)):
+				response_list.append(result[i])
+
+			json_response = { "character_data" : response_list }
+
+			return json_response
+
+		else:
+	
+			sql = 'select characters.stars, characters.color, characters.name, skills.type, skills.cut, skills.target, characters_skill.quantity from characters inner join characters_skill on characters.character_id = characters_skill.character_id inner join skills on characters_skill.skill_id = skills.skill_id where skills.type = "%s"'% (type)
+			cursor.execute(sql)
+			result = cursor.fetchall()
+
+			response_list = []
+
+			for i in range(len(result)):
+				response_list.append(result[i])
+
+			json_response = { "character_data" : response_list }
+
+			return json_response
+
+
 
 
 	
