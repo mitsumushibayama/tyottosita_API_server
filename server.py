@@ -18,4 +18,4 @@ async def get_skill_characters(type: str, cut: int = None, flag: bool = True):
 
 
 if __name__ == "__main__":
-	uvicorn.run(app, host="0.0.0.0", port = 8000)
+	uvicorn.run(app, host="0.0.0.0", port = 8080)
